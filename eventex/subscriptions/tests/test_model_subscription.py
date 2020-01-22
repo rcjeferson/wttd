@@ -1,6 +1,6 @@
+from datetime import datetime
 from django.test import TestCase
 from eventex.subscriptions.models import Subscription
-from datetime import datetime
 
 class SubscriptionModelTest(TestCase):
     def setUp(self):
@@ -18,3 +18,6 @@ class SubscriptionModelTest(TestCase):
     def test_created_at(self):
         """Subscription must have an auto created_at attr"""
         self.assertIsInstance(self.obj.created_at, datetime)
+
+    def test_str(self):
+        self.assertEqual('Jeferson Costa', str(self.obj))
