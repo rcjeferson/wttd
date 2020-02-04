@@ -31,7 +31,8 @@ class HomeTest(TestCase):
         ]
 
         for expected in content:
-            self.assertContains(self.resp, expected)
+            with self.subTest():
+                self.assertContains(self.resp, expected)
 
     def test_menu_links(self):
         """Must has specified links in menu"""
@@ -44,4 +45,5 @@ class HomeTest(TestCase):
         ]
         
         for link in expected:
-            self.assertContains(self.resp, '{}#{}'.format(r('home'), link))
+            with self.subTest():
+                self.assertContains(self.resp, '{}#{}'.format(r('home'), link))
