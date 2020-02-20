@@ -3,19 +3,18 @@ from django.test import TestCase
 
 
 class HomeTest(TestCase):
+    fixtures = ['keynotes.json']
+
     def setUp(self):
         self.resp = self.client.get(r('home'))
-
 
     def test_get(self):
         """GET / must return status code 200"""
         self.assertEqual(200, self.resp.status_code)
 
-
     def test_template(self):
         """Must use index.html"""
         self.assertTemplateUsed(self.resp, 'index.html')
-
 
     def test_subscription_link(self):
         expected = 'href="{}"'.format(r('subscriptions:new'))
@@ -24,8 +23,10 @@ class HomeTest(TestCase):
     def test_speakers(self):
         """Must show keynote speakers"""
         content = [
+            'href="{}"'.format(r('speaker_detail', slug='grace-hopper')),
             'Grace Hopper',
             'http://hbn.link/hopper-pic',
+            'href="{}"'.format(r('speaker_detail', slug='alan-turing')),
             'Alan Turing',
             'http://hbn.link/turing-pic',
         ]
@@ -43,7 +44,7 @@ class HomeTest(TestCase):
             'register',
             'venue',
         ]
-        
+
         for link in expected:
             with self.subTest():
                 self.assertContains(self.resp, '{}#{}'.format(r('home'), link))
