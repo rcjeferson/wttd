@@ -1,0 +1,13 @@
+<h3>{{ talk.start }} - {{ talk.title }}</h3>
+<h4>
+  Por
+  {% for speaker in talk.speakers.all %}
+  {% if not forloop.first and not forloop.last %}
+  {{ "," }}
+  {% elif forloop.counter > 1 and forloop.last %}
+  {{ "e" }}
+  {% endif %}
+  <a href="{{ speaker.get_absolute_url }}">{{ speaker.name }}</a>
+  {% endfor %}
+</h4>
+<p>{{ talk.description }}</p>
