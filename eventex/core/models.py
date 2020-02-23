@@ -45,7 +45,7 @@ class Contact(models.Model):
         return self.value
 
 
-class Talk(models.Model):
+class Activity(models.Model):
     title = models.CharField('titulo', max_length=255)
     start = models.TimeField('início', null=True, blank=True)
     description = models.TextField('descrição', blank=True)
@@ -55,6 +55,14 @@ class Talk(models.Model):
 
     objects = PeriodManager()
 
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.title
+
+
+class Talk(Activity):
     class Meta:
         verbose_name = 'palestra'
         verbose_name_plural = 'palestras'
