@@ -1,8 +1,7 @@
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
-from eventex.core.managers import PeriodManager
-from eventex.core.models import Speaker, Talk
+from eventex.core.models import Course, Speaker, Talk
 
 
 class TalkListGet(TestCase):
@@ -25,8 +24,16 @@ class TalkListGet(TestCase):
             description='Talk description',
         )
 
+        c1 = Course.objects.create(
+            title='Course title',
+            start='09:00',
+            description='Course description',
+            slots=20
+        )
+
         t1.speakers.add(speaker)
         t2.speakers.add(speaker)
+        c1.speakers.add(speaker)
 
         self.resp = self.client.get(r('talk_list'))
 
@@ -38,12 +45,15 @@ class TalkListGet(TestCase):
 
     def test_html(self):
         contents = [
+            (1, '09:00'),
             (1, '10:00'),
             (1, '13:00'),
-            (2, '/palestrantes/test-speaker'),
+            (1, 'Course description'),
+            (1, 'Course title'),
             (2, 'Talk description'),
-            (2, 'Test Speaker'),
             (2, 'Talk title'),
+            (3, '/palestrantes/test-speaker'),
+            (3, 'Test Speaker'),
         ]
 
         for count, expected in contents:
@@ -52,7 +62,7 @@ class TalkListGet(TestCase):
 
     def test_context(self):
         """Talk must be in context"""
-        variables = ['morning_talks', 'afternoon_talks']
+        variables = ['morning_talks', 'afternoon_talks', 'courses']
 
         for key in variables:
             with self.subTest():
