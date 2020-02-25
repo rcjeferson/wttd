@@ -16,13 +16,6 @@
         {% empty %}
         Nenhuma palestra disponível no período da tarde.
         {% endfor %}
-
-        <h2>Mini-Cursos</h2>
-        {% for course in courses %}
-        {% include 'core/talk_list_snippet.html' with talk=course only %}
-        {% empty %}
-        Nenhum curso disponível.
-        {% endfor %}
     </div>
 </section>
 {% endblock content %}
